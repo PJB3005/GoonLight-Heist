@@ -1,5 +1,8 @@
+# Stupid windows EOLs are NOT getting in here!
+
 *.dm            text eol=lf
 *.dme           text eol=lf
+*.md            text eol=lf
 *.txt           text eol=lf
 *.gitignore     text eol=lf
 *.gitattributes text eol=lf
