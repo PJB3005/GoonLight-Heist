@@ -32,7 +32,7 @@ This will result in the overlay appearing as a full black square, and as such co
 
 If one wants to manipulate a certain corner, one can increase the values for that color. For example, if one wants to make the **bottom left corner** of the overlay to become fully lit, the matrix turns into this:
 
-|r|g|b|a|corner
+ |r|g|b|a|corner
 ---|---|---|---|---|---
 **r**|**1**|**1**|**1**|**0**|**bottom left**
 g|0|0|0|0|bottom right
