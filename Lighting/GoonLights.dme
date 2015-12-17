@@ -1,0 +1,15 @@
+// BEGIN_INTERNALS
+// END_INTERNALS
+// BEGIN_FILE_DIR
+#define FILE_DIR .
+// END_FILE_DIR
+// BEGIN_PREFERENCES
+#define DEBUG
+// END_PREFERENCES
+// BEGIN_INCLUDE
+#include "_lighting_defines.dm"
+#include "lighting_atom.dm"
+#include "lighting_overlay.dm"
+#include "lighting_system.dm"
+#include "lighting_turf.dm"
+// END_INCLUDE

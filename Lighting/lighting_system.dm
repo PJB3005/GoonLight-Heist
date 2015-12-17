@@ -20,6 +20,6 @@
 		else
 			var/area/A = T.loc
 			if(!A.dynamic_lighting)
-			 	continue
+				continue
 
 		getFromPool(/atom/movable/lighting_overlay, T)
