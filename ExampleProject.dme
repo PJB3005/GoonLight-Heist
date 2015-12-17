@@ -8,6 +8,8 @@
 #define DEBUG
 // END_PREFERENCES
 // BEGIN_INCLUDE
+#include "ExampleProject\lamp.dm"
+#include "ExampleProject\Turf.dm"
 #include "helpers\atom.dm"
 #include "Lighting\_lighting_defines.dm"
 #include "Lighting\lighting_atom.dm"
