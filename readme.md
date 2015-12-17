@@ -8,5 +8,4 @@ Goonstation got a new lighting engine:
 
 ![](https://i.imgur.com/vsdkRnC.jpg)
 
-Now to recreate it under an MIT lisence...
-
+Now to recreate it under an MIT license...
