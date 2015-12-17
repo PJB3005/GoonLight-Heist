@@ -20,20 +20,20 @@ Because each corner has a different channel, each corner can individual colours 
 
 The base of said colour matrix is this:
 
-|r|g|b|a|corner
--|-|-|-|-|-
-r|0|0|0|0|bottom left
-g|0|0|0|0|bottom right
-b|0|0|0|0|top left
-a|0|0|0|0|top right
-c|0|0|0|1| N/A
+ | r | g | b | a | corner
+--- | ---- | ---- | ---- | ---- | ----
+r | 0 | 0 | 0 | 0 | bottom left
+g | 0 | 0 | 0 | 0 | bottom right
+b | 0 | 0 | 0 | 0 | top left
+a | 0 | 0 | 0 | 0 | top right
+c | 0 | 0 | 0 | 1 | N/A
 
 This will result in the overlay appearing as a full black square, and as such completely obstructs the tile.
 
 If one wants to manipulate a certain corner, one can increase the values for that color. For example, if one wants to make the **bottom left corner** of the overlay to become fully lit, the matrix turns into this:
 
 |r|g|b|a|corner
--|-|-|-|-|-
+---|---|---|---|---|---
 **r**|**1**|**1**|**1**|**0**|**bottom left**
 g|0|0|0|0|bottom right
 b|0|0|0|0|top left
