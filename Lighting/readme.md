@@ -16,7 +16,7 @@ While it may be hard to see, ever corner of the 32x32 sprite has its own channel
 * Bottom left: Red (basically unnoticable, as there is no alpha)
 * Bottom right: Green
 
-Because each corner has a different channel, each corner can individual colours (and have them blend between the other corners) with a smart colour matrix.
+Because each corner has a different channel, each corner can have individual colours (and have them blend between the other corners) with a smart colour matrix.
 
 The base of said colour matrix is this:
 
