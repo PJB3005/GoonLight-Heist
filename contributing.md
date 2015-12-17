@@ -38,3 +38,11 @@ Instead of this:
 
 		... // More code.
 ```
+
+## FILE_DIR
+DM, unless disabled, automatically adds FILE_DIR definitions to the `.dme` file.
+We do not want this, as usage of FILE_DIR in general is bad form, it slows down compilation, bloats the `.dme`...
+
+To disable FILE_DIR generation in DM:
+
+Build -> Preferences for `[.dme]` -> Uncheck the first thing that says FILE_DIR.
