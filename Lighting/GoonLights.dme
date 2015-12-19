@@ -10,6 +10,8 @@
 #include "_lighting_defines.dm"
 #include "lighting_atom.dm"
 #include "lighting_overlay.dm"
+#include "lighting_source.dm"
 #include "lighting_system.dm"
 #include "lighting_turf.dm"
+#include "~lighting_undefs.dm"
 // END_INCLUDE

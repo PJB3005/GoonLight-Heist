@@ -1,6 +1,8 @@
 /turf
+	var/dynamic_lighting = 1
 	var/tmp/list/affecting_lights // List of light sources affecting this turf.
 	var/tmp/atom/movable/lighting_overlay/lighting_overlay // Our lighting overlay.
+	var/tmp/list/datum/lighting_corner/corners[4]
 
 // Causes any affecting light sources to be queued for a visibility update, for example a door got opened.
 /turf/proc/reconsider_lights()
@@ -18,7 +20,7 @@
 
 	var/atom/movable/lighting_overlay/O
 	var/area/A = loc
-	if(A.lighting_use_dynamic)
+	if(A.dynamic_lighting)
 		O = getFromPool(/atom/movable/lighting_overlay, src)
 		lighting_overlay = O
 		all_lighting_overlays |= O

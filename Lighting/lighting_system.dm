@@ -1,8 +1,3 @@
-#ifndef LIGHTING_INSTANT_UPDATES
-/var/list/lighting_update_lights    = list()    // List of light sources queued for update.
-/var/list/lighting_update_overlays  = list()    // List of ligting overlays queued for update.
-#endif
-
 /var/list/all_lighting_overlays     = list()    // Global list of lighting overlays.
 
 /area/var/dynamic_lighting          = 1         // Disabling this variable on an area disables dynamic lighting.
@@ -23,3 +18,8 @@
 				continue
 
 		getFromPool(/atom/movable/lighting_overlay, T)
+
+/world/New()
+	. = ..()
+
+	create_all_lighting_overlays()

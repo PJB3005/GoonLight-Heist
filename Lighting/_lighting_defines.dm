@@ -1,14 +1,17 @@
-#define LIGHTING_INSTANT_UPDATES // Comment out to use an interval-based update scheduler.
+//#define LIGHTING_INSTANT_UPDATES // Comment out to use an interval-based update scheduler.
 
 #ifndef LIGHTING_INSTANT_UPDATES
 #define LIGHTING_INTERVAL   5   // Frequency, in 1/10ths of a second, of the lighting process.
+#include "lighting_process.dm"
 #endif
 
 #define LIGHTING_FALLOFF    1   // Type of falloff to use for lighting; 1 for circular, 2 for square.
-#define LIGHTING_LAMBERTIAN 1   // Use lambertian shading for light sources.
+#define LIGHTING_LAMBERTIAN 0   // Use lambertian shading for light sources.
 #define LIGHTING_HEIGHT     1   // Height off the ground of light sources on the pseudo-z-axis, you should probably leave this alone.
 
 #define LIGHTING_LAYER      10  // Drawing layer for lighting overlays.
+
+#define INVISIBILITY_LIGHTING 20
 
 // If I were you I'd leave this alone.
 #define LIGHTING_BASE_MATRIX \
@@ -22,7 +25,6 @@
 	)                        \
 
 // Helpers so we can (more easily) control the colour matrices.
-
 #define RR 1
 #define RG 2
 #define RB 3

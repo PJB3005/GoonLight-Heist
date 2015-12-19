@@ -4,8 +4,8 @@
 	icon        = 'ExampleProject/obj.dmi'
 	icon_state  = "lamp-on"
 
-	light_range = 3
-	light_color = "#FFFF00"
+	light_range = 5
+	// light_color = "#FFFF00"
 
 	var/on      = 0
 
