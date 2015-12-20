@@ -8,7 +8,8 @@
 	for(A=O, A && !isturf(A), A=A.loc);  // semicolon is for the empty statement
 	. = A
 
-// It's like doing loc = someplace, except it calls Crossed(), Entered() and Exited() wherever appropriate
+// It's like doing loc = someplace, except it calls Crossed(), Entered() and Exited() wherever appropriate.
+// This is needed to notify the light source that we've updated.
 /atom/movable/proc/forceMove(var/atom/new_loc)
 	if(loc)
 		loc.Exited(src, new_loc)
