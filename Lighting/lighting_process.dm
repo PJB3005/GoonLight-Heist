@@ -30,5 +30,5 @@
 		L.needs_update = FALSE
 
 	for(var/datum/lighting_corner/L in lighting_update_corners)
-		L.update_overlay()
+		L.update_overlays()
 		L.needs_update = FALSE

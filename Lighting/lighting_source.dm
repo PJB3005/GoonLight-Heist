@@ -155,7 +155,6 @@
 				// world << "skipping"
 				continue
 
-			L += C
 			.  = LUM_FALLOFF(C, source_turf)
 			. *= light_power
 
