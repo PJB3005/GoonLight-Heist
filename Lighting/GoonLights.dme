@@ -9,6 +9,7 @@
 // BEGIN_INCLUDE
 #include "_lighting_defines.dm"
 #include "lighting_atom.dm"
+#include "lighting_corner.dm"
 #include "lighting_overlay.dm"
 #include "lighting_source.dm"
 #include "lighting_system.dm"
