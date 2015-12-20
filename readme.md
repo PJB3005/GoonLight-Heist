@@ -2,8 +2,8 @@
 
 ## What the hell is this?
 
-Goonstation got a new lighting engine:
+This is a lighting engine for the BYOND game engine, it is lisenced under the MIT lisence.
 
-![](https://i.imgur.com/vsdkRnC.jpg)
+Credits to @Mloc (code), @PJB3005 (code), @mwerezak (really small amount of code), and Tobba (who I stole the the way it works from).
 
-Now to recreate it under an MIT license...
+![](http://i.imgur.com/B5Xtf7R.png)
