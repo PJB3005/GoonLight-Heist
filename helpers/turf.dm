@@ -7,12 +7,20 @@
 	// BYOND never deletes turfs, when you "delete" a turf, it actually morphs the turf into a new one.
 	// Running procs do NOT get stopped due to this.
 	var/l_overlay     = lighting_overlay // Not even a need to cast this, honestly.
-	var/affect_lights = affect_lights
-	var/l_corners     = lighting_corners
+	var/affect_lights = affecting_lights
+	var/l_corners     = corners
+	var/old_dynamic   = dynamic_lighting
 
 	// Create the new turf, replacing us.
 	new new_type(src)
 
 	lighting_overlay  = l_overlay
 	affecting_lights  = affect_lights
-	lighting_corners  = l_corners
+	corners  = l_corners
+
+	if(old_dynamic != dynamic_lighting)
+		if(dynamic_lighting)
+			lighting_build_overlay()
+
+		else
+			lighting_clear_overlay()
