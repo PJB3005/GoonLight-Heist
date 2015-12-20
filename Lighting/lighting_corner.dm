@@ -26,8 +26,10 @@
 
 	masters[new_turf] = diagonal
 
-	var/horizontal = diagonal & ~(diagonal - 1)  // The horizontal directions (4 and 8) are bigger than the vertical ones (1 and 2), so we can reliably say the lsb is the horizontal direction.
-	var/vertical   = diagonal & ~horizontal      // Now that we know the horizontal one we can get the vertical one.
+	var/vertical   = diagonal & ~(diagonal - 1) // The horizontal directions (4 and 8) are bigger than the vertical ones (1 and 2), so we can reliably say the lsb is the horizontal direction.
+	var/horizontal = diagonal & ~vertical       // Now that we know the horizontal one we can get the vertical one.
+
+	// world << "Corner \ref[src] created: turf \ref[new_turf] ([new_turf.x], [new_turf.y]), diagonal: [dir2text(diagonal)] (horizontal: [dir2text(horizontal)], vertical: [dir2text(vertical)])"
 
 	x = new_turf.x + (horizontal == EAST  ? 0.5 : -0.5)
 	y = new_turf.y + (vertical   == NORTH ? 0.5 : -0.5)
