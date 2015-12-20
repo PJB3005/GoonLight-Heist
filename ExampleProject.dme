@@ -15,6 +15,7 @@
 #include "ExampleProject\map.dmm"
 #include "helpers\area.dm"
 #include "helpers\atom.dm"
+#include "helpers\dview.dm"
 #include "helpers\math.dm"
 #include "helpers\turf.dm"
 #include "helpers\type2type.dm"

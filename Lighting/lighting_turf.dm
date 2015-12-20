@@ -59,3 +59,6 @@
 
 		else
 			lighting_clear_overlay()
+
+/turf/proc/get_corners(var/dir)
+	return corners

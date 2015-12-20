@@ -137,6 +137,26 @@
 		lum_g = 1
 		lum_b = 1
 
+// Macro that applies light to a new corner.
+// It is a macro in the interest of speed, yet not having to copy paste it.
+// If you're wondering what's with the backslashes, the backslashes cause BYOND to not automatically end the line.
+// As such this all gets counted as a single line.
+// The braces and semicolons are there to be able to do this on a single line.
+
+#define APPLY_CORNER(C)              \
+	. = LUM_FALLOFF(C, source_turf); \
+                                     \
+	. *= light_power;                \
+                                     \
+	effect_str[C] = .;               \
+                                     \
+	C.update_lumcount                \
+	(                                \
+		. * applied_lum_r,           \
+		. * applied_lum_g,           \
+		. * applied_lum_b            \
+	);
+
 // This is the define used to calculate falloff.
 #define LUM_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 + LIGHTING_HEIGHT) / max(1, light_range)))
 
@@ -149,22 +169,13 @@
 	applied_lum_g = lum_g
 	applied_lum_b = lum_b
 
-	for(var/turf/T in view(light_range, source_turf))
-		for(var/datum/lighting_corner/C in T.corners)
+	FOR_DVIEW(var/turf/T, light_range, source_turf, INVISIBILITY_LIGHTING)
+		for(var/datum/lighting_corner/C in T.get_corners(get_dir(source_turf, T)))
 			if(C in effect_str)
 				// world << "skipping"
 				continue
 
-			.  = LUM_FALLOFF(C, source_turf)
-			. *= light_power
-
-			C.update_lumcount( // My inability to put this ( on a newline is a complot against my coding style.
-				. * applied_lum_r,
-				. * applied_lum_g,
-				. * applied_lum_b
-			)
-
-			effect_str[C] = .
+			APPLY_CORNER(C)
 
 		if(!T.affecting_lights)
 			T.affecting_lights = list()
@@ -191,3 +202,6 @@
 	effect_str.Cut()
 
 /datum/light_source/proc/smart_vis_update()
+	var/list/datum/lighting_corner/corners = list()
+	FOR_DVIEW(var/turf/T, light_range, source_turf, 0)
+		corners |= T.get_corners(get_dir(source_turf, T))
