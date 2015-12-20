@@ -18,6 +18,11 @@
 	if(!light_range)
 		icon_state = "lamp-off"
 
+/obj/lamp/verb/change_power(var/new_power as num)
+	set src in view()
+	set_light(l_power = new_power)
+
+
 /obj/lamp/verb/delete()
 	set src in view()
 	qdel(src)
