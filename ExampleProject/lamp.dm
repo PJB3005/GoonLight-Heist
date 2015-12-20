@@ -15,7 +15,7 @@
 	set src in view()
 	set_light(new_range)
 
-	if(new_range)
+	if(!light_range)
 		icon_state = "lamp-off"
 
 /obj/lamp/verb/delete()
