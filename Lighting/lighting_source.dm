@@ -170,7 +170,7 @@
 			T.affecting_lights = list()
 
 		T.affecting_lights += src
-		affecting_turfs    += T   // Literally only here so we can remove them in remove_lum() without too big of a hassle...
+		affecting_turfs    += T
 
 /datum/light_source/proc/remove_lum()
 	applied = FALSE
@@ -181,7 +181,7 @@
 	affecting_turfs.Cut()
 
 	for(var/datum/lighting_corner/L in effect_str)
-		var/str = effect_str[L]
+		var/str = -effect_str[L]
 		L.update_lumcount(
 			str * applied_lum_r,
 			str * applied_lum_g,
@@ -191,5 +191,3 @@
 	effect_str.Cut()
 
 /datum/light_source/proc/smart_vis_update()
-
-/datum/light_source/proc/calc_turf(var/turf/T)
