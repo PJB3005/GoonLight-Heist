@@ -7,16 +7,17 @@
 	light_range = 5
 	// light_color = "#FFFF00"
 
-	var/on      = 0
-
 /obj/lamp/verb/change_color(var/new_color as color)
+	set src in view()
 	set_light(l_color = new_color)
 
 /obj/lamp/verb/change_range(var/new_range as num)
+	set src in view()
 	set_light(new_range)
 
 	if(new_range)
 		icon_state = "lamp-off"
 
 /obj/lamp/verb/delete()
-	del(src)
+	set src in view()
+	qdel(src)

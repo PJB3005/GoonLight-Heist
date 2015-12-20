@@ -17,6 +17,10 @@
 	var/lum_g = 0
 	var/lum_b = 0
 
+	#ifndef LIGHTING_INSTANT_UPDATES
+	var/tmp/needs_update = FALSE
+	#endif
+
 /datum/lighting_corner/New(var/turf/new_turf, var/diagonal)
 	. = ..()
 
@@ -28,7 +32,7 @@
 	x = new_turf.x + (horizontal == EAST  ? 0.5 : -0.5)
 	y = new_turf.y + (vertical   == NORTH ? 0.5 : -0.5)
 
-	// My initial plan was to make this loop through a list of all the dirs (horizontal, vertical, and the diagonal one, dir).
+	// My initial plan was to make this loop through a list of all the dirs (horizontal, vertical, diagonal).
 	// Issue being that the only way I could think of doing it was very messy, slow and honestly overengineered.
 	// So we'll have this hardcode instead.
 	var/turf/T
@@ -62,7 +66,14 @@
 	lum_g += delta_g
 	lum_b += delta_b
 
-	var/mx = max(lum_r, lum_g, lum_b) // Scale it so 1 is the strongest lum, if it is below 1.
+#ifndef LIGHTING_INSTANT_UPDATES
+	if(!needs_update)
+		lighting_update_corners += src
+		needs_update = TRUE
+
+/datum/lighting_corner/proc/update_overlays()
+#endif
+	var/mx = max(lum_r, lum_g, lum_b) // Scale it so 1 is the strongest lum, if it is above 1.
 	. = 1 // factor
 	if(mx > 1)
 		. = 1 / mx
@@ -70,6 +81,9 @@
 	// world << "factor: [.]"
 
 	for(var/turf/T in masters)
+		if(!T.lighting_overlay)
+			continue
+
 		var/i = 0
 		switch(masters[T])
 			if(NORTHEAST)
@@ -88,13 +102,13 @@
 				// world << "NORTHWEST"
 				i = BR
 
-		var/list/fuckyoubyond = T.lighting_overlay.color:Copy()
+		var/list/L = T.lighting_overlay.color:Copy() // For some dumb reason BYOND won't allow me to use [] on a colour matrix directly.
 
-		fuckyoubyond[i    ] = lum_r * .
-		fuckyoubyond[i + 1] = lum_g * .
-		fuckyoubyond[i + 2] = lum_b * .
+		L[i    ] = lum_r * .
+		L[i + 1] = lum_g * .
+		L[i + 2] = lum_b * .
 
-		T.lighting_overlay.color = fuckyoubyond
+		T.lighting_overlay.color = L
 
 		// world << list2params(T.lighting_overlay.color)
 

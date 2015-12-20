@@ -1,5 +1,5 @@
-/var/list/lighting_update_lights    = list()    // List of light sources queued for update.
-/var/list/lighting_update_overlays  = list()    // List of ligting overlays queued for update.
+/var/list/lighting_update_lights    = list()    // List of lighting sources queued for update.
+/var/list/lighting_update_corners   = list()    // List of lighting corners queued for update.
 
 /var/lighting_processing            = 1
 
@@ -10,7 +10,7 @@
 */
 
 /mob/verb/lighting_start_process()
-	set waitfor = 0
+	set waitfor = FALSE
 	while(lighting_processing)
 		sleep(LIGHTING_INTERVAL)
 		lighting_process()
@@ -26,9 +26,9 @@
 		else if(L.vis_update)	// We smartly update only tiles that became (in) visible to use.
 			L.smart_vis_update()
 
-		L.vis_update   = 0
-		L.needs_update = 0
+		L.vis_update   = FALSE
+		L.needs_update = FALSE
 
-	for(var/atom/movable/lighting_overlay/O in lighting_update_lights)
-		//O.update_overlay()
-		//O.needs_update = 0
+	for(var/datum/lighting_corner/L in lighting_update_corners)
+		L.update_overlay()
+		L.needs_update = FALSE

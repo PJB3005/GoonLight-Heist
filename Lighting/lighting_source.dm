@@ -20,7 +20,8 @@
 	var/tmp/applied_lum_g
 	var/tmp/applied_lum_b
 
-	var/list/effect_str     // List used to store how much we're affecting turfs.
+	var/list/datum/lighting_corner/effect_str     // List used to store how much we're affecting corners.
+	var/list/turf/affecting_turfs
 
 	var/applied             // Whether we have applied our light yet or not.
 
@@ -48,7 +49,8 @@
 
 	parse_light_color()
 
-	effect_str = list()
+	effect_str      = list()
+	affecting_turfs = list()
 
 	update()
 
@@ -147,11 +149,9 @@
 	applied_lum_g = lum_g
 	applied_lum_b = lum_b
 
-	var/list/datum/light_source/L = list()
-
 	for(var/turf/T in view(light_range, source_turf))
 		for(var/datum/lighting_corner/C in T.corners)
-			if(C in L)
+			if(C in effect_str)
 				// world << "skipping"
 				continue
 
@@ -159,13 +159,37 @@
 			.  = LUM_FALLOFF(C, source_turf)
 			. *= light_power
 
-			C.update_lumcount(
-				. * lum_r,
-				. * lum_g,
-				. * lum_b
+			C.update_lumcount( // My inability to put this ( on a newline is a complot against my coding style.
+				. * applied_lum_r,
+				. * applied_lum_g,
+				. * applied_lum_b
 			)
 
+			effect_str[C] = .
+
+		if(!T.affecting_lights)
+			T.affecting_lights = list()
+
+		T.affecting_lights += src
+		affecting_turfs    += T   // Literally only here so we can remove them in remove_lum() without too big of a hassle...
+
 /datum/light_source/proc/remove_lum()
+	applied = FALSE
+
+	for(var/turf/T in affecting_turfs)
+		T.affecting_lights -= src
+
+	affecting_turfs.Cut()
+
+	for(var/datum/lighting_corner/L in effect_str)
+		var/str = effect_str[L]
+		L.update_lumcount(
+			str * applied_lum_r,
+			str * applied_lum_g,
+			str * applied_lum_b
+		)
+
+	effect_str.Cut()
 
 /datum/light_source/proc/smart_vis_update()
 
