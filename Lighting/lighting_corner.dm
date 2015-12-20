@@ -48,15 +48,15 @@
 	// Now the one horizontal to
 	T = get_step(new_turf, horizontal)
 	if(T) // Ditto.
-		masters[T] = turn(horizontal, 180) | vertical
-		i          = LIGHTING_CORNER_DIAGONAL.Find(masters[T])
+		masters[T]   = turn(horizontal, 180) | vertical
+		i            = LIGHTING_CORNER_DIAGONAL.Find(masters[T])
 		T.corners[i] = src
 
 	// And finally the vertical one.
 	T = get_step(new_turf, vertical)
 	if(T)
-		masters[T] = turn(vertical, 180) | horizontal
-		i          = LIGHTING_CORNER_DIAGONAL.Find(masters[T])
+		masters[T]   = turn(vertical, 180) | horizontal
+		i            = LIGHTING_CORNER_DIAGONAL.Find(masters[T])
 		T.corners[i] = src
 
 // God that was a mess, now to do the rest of the corner code! Hooray!

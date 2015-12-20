@@ -10,6 +10,7 @@
 // BEGIN_INCLUDE
 #include "ExampleProject\lamp.dm"
 #include "ExampleProject\mob.dm"
+#include "ExampleProject\testing_verbs.dm"
 #include "ExampleProject\Turf.dm"
 #include "ExampleProject\map.dmm"
 #include "helpers\area.dm"
