@@ -3,11 +3,9 @@
 
 /var/lighting_processing            = 1
 
-/*
 /world/New()
 	. = ..()
 	lighting_start_process()
-*/
 
 /proc/lighting_start_process()
 	set waitfor = FALSE
