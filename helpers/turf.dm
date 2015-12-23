@@ -1,6 +1,7 @@
 // So the thing is, making things like lighting overlay data persist when a turf gets replaced is sort of hard...
 // As such, whenever you're causing a turf's type to change, use this proc to do it.
 // If you don't, the lighting engine will not approve of your shenanigans.
+// Still unsure whether this proc should be under /Lighting or under /helpers...
 /turf/proc/change_turf(var/new_type)
 	// Back all this data up, so we can set it after the turf replace.
 	// If you're wondering how this proc'll keep running since the turf should be "deleted":
@@ -16,7 +17,7 @@
 
 	lighting_overlay  = l_overlay
 	affecting_lights  = affect_lights
-	corners  = l_corners
+	corners           = l_corners
 
 	if(old_dynamic != dynamic_lighting)
 		if(dynamic_lighting)
