@@ -8,6 +8,7 @@
 #define DEBUG
 // END_PREFERENCES
 // BEGIN_INCLUDE
+#include "ExampleProject\door.dm"
 #include "ExampleProject\lamp.dm"
 #include "ExampleProject\mob.dm"
 #include "ExampleProject\testing_verbs.dm"

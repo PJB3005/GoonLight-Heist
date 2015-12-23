@@ -157,6 +157,16 @@
 		. * applied_lum_b            \
 	);
 
+// I don't need to explain what this does, do I?
+#define REMOVE_CORNER(C)             \
+	. = -effect_str[C];              \
+	C.update_lumcount                \
+	(                                \
+		. * applied_lum_r,           \
+		. * applied_lum_g,           \
+		. * applied_lum_b            \
+	);
+
 // This is the define used to calculate falloff.
 #define LUM_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 + LIGHTING_HEIGHT) / max(1, light_range)))
 
@@ -191,17 +201,27 @@
 
 	affecting_turfs.Cut()
 
-	for(var/datum/lighting_corner/L in effect_str)
-		var/str = -effect_str[L]
-		L.update_lumcount(
-			str * applied_lum_r,
-			str * applied_lum_g,
-			str * applied_lum_b
-		)
+	for(var/datum/lighting_corner/C in effect_str)
+		REMOVE_CORNER(C)
 
 	effect_str.Cut()
 
 /datum/light_source/proc/smart_vis_update()
 	var/list/datum/lighting_corner/corners = list()
+	var/list/turf/turfs                    = list()
 	FOR_DVIEW(var/turf/T, light_range, source_turf, 0)
 		corners |= T.get_corners(get_dir(source_turf, T))
+		turfs   += T
+
+	for(var/turf/T in turfs - affecting_turfs) // New turfs, add us to the affecting lights of them.
+		T.affecting_lights += src
+
+	for(var/turf/T in affecting_turfs - turfs) // Now-gone turfs, remove us from the affecting lights.
+		T.affecting_lights -= src
+
+	for(var/datum/lighting_corner/C in corners - effect_str) // New corners
+		APPLY_CORNER(C)
+
+	for(var/datum/lighting_corner/C in effect_str - corners) // Old, now gone, corners.
+		REMOVE_CORNER(C)
+		effect_str -= C
