@@ -17,7 +17,7 @@
 			if(!A.dynamic_lighting)
 				continue
 
-		getFromPool(/atom/movable/lighting_overlay, T)
+		getFromPool(/atom/movable/lighting_overlay, T, TRUE)
 
 /world/New()
 	. = ..()

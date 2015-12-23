@@ -10,8 +10,8 @@
 	// var/list/datum/light_source/affecting_lights = list()
 
 	// Mostly here for simplicity.
-	var/x = 0
-	var/y = 0
+	var/x     = 0
+	var/y     = 0
 
 	var/lum_r = 0
 	var/lum_g = 0
