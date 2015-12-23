@@ -8,3 +8,7 @@
 
 /mob/verb/spawn_door()
 	new/obj/door(loc)
+
+/mob/verb/change_turf_type(var/new_type as text)
+	var/turf/T = loc
+	T.change_turf(new_type) 
