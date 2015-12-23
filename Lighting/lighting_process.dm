@@ -9,7 +9,7 @@
 	lighting_start_process()
 */
 
-/mob/verb/lighting_start_process()
+/proc/lighting_start_process()
 	set waitfor = FALSE
 	while(lighting_processing)
 		sleep(LIGHTING_INTERVAL)

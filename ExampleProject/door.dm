@@ -4,10 +4,10 @@
 	icon       = 'ExampleProject/obj.dmi'
 	icon_state = "door"
 
-	opacity    = 1
-	density    = 1
+	opacity    = TRUE
+	density    = TRUE
 
-	var/open   = 0
+	var/open   = FALSE
 
 /obj/door/Click(var/location, var/control, var/params)
 	open       = !open
