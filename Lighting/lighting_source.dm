@@ -28,6 +28,7 @@
 	var/vis_update          // Whether we should smartly recalculate visibility. and then only update tiles that became (in)visible to us.
 	var/needs_update        // Whether we are queued for an update.
 	var/destroyed           // Whether we are destroyed and need to stop emitting light.
+	var/force_update
 
 /datum/light_source/New(var/atom/owner, var/atom/top)
 	source_atom = owner // Set our new owner.
@@ -38,7 +39,7 @@
 	top_atom = top
 	if(top_atom != source_atom)
 		if(!top.light_sources)
-			top.light_sources = list()
+			top.light_sources     = list()
 
 		top_atom.light_sources += src
 
@@ -59,11 +60,12 @@
 // Kill ourselves.
 /datum/light_source/proc/destroy()
 	destroyed = 1
+	force_update()
 	if(source_atom)
 		source_atom.light_sources -= src
 
 	if(top_atom)
-		top_atom.light_sources -= src
+		top_atom.light_sources    -= src
 
 // This proc will cause the light source to update the top atom, and add itself to the update queue.
 /datum/light_source/proc/update(atom/new_top_atom)
