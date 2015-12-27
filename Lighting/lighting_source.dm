@@ -86,6 +86,13 @@
 		lighting_update_lights += src
 		needs_update = 1
 
+// Will force an update without checking if it's actually needed.
+/datum/light_source/proc/force_update()
+	force_update = 1
+	if(!needs_update) // Add us to the queue if we aren't updating already.
+		needs_update = 1
+		lighting_update_lights += src
+
 // Will cause the light source to recalculate turfs that were removed or added to visibility only.
 /datum/light_source/proc/vis_update()
 	if(!needs_update) // Add us to the queue if we aren't updating already.

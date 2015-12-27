@@ -16,7 +16,7 @@
 /proc/lighting_process()
 	for(var/datum/light_source/L in lighting_update_lights)
 		. = L.check()
-		if(L.destroyed || .)
+		if(L.destroyed || . || L.force_update)
 			L.remove_lum()
 			if(!L.destroyed)
 				L.apply_lum()
@@ -25,6 +25,7 @@
 			L.smart_vis_update()
 
 		L.vis_update   = FALSE
+		L.force_update = FALSE
 		L.needs_update = FALSE
 
 	for(var/datum/lighting_corner/L in lighting_update_corners)
