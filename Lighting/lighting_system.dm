@@ -1,7 +1,5 @@
 /var/list/all_lighting_overlays     = list()    // Global list of lighting overlays.
 
-/area/var/dynamic_lighting          = 1         // Disabling this variable on an area disables dynamic lighting.
-
 /proc/create_all_lighting_overlays()
 	for(var/level = 1 to world.maxz)
 		create_lighting_overlays_zlevel(level)

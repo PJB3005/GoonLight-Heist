@@ -17,7 +17,7 @@
 
 	var/turf/T         = loc // If this runtimes atleast we'll know what's creating overlays in things that aren't turfs.
 	T.lighting_overlay = src
-	// T.luminosity       = FALSE
+	T.luminosity       = FALSE
 
 	if(no_update)
 		return
@@ -26,8 +26,10 @@
 		C.update_overlays()
 
 /atom/movable/lighting_overlay/Destroy()
-	var/turf/T = loc
+	var/turf/T   = loc
 	if(istype(T))
 		T.lighting_overlay = null
+
+	T.luminosity = TRUE
 
 	..()

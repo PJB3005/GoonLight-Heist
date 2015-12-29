@@ -21,6 +21,7 @@
 #include "helpers\turf.dm"
 #include "helpers\type2type.dm"
 #include "Lighting\_lighting_defines.dm"
+#include "Lighting\lighting_area.dm"
 #include "Lighting\lighting_atom.dm"
 #include "Lighting\lighting_corner.dm"
 #include "Lighting\lighting_overlay.dm"
