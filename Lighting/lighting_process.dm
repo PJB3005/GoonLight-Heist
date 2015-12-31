@@ -1,5 +1,5 @@
-/var/list/lighting_update_lights    = list()    // List of lighting sources queued for update.
-/var/list/lighting_update_corners   = list()    // List of lighting corners queued for update.
+/var/list/lighting_update_lights    = list()    // List of lighting sources  queued for update.
+/var/list/lighting_update_overlays  = list()    // List of lighting overlays queued for update.
 
 /var/lighting_processing            = 1
 
@@ -28,6 +28,7 @@
 		L.force_update = FALSE
 		L.needs_update = FALSE
 
-	for(var/datum/lighting_corner/L in lighting_update_corners)
-		L.update_overlays()
+	for(var/A in lighting_update_overlays)
+		var/atom/movable/lighting_overlay/L = A // Typecasting this later so BYOND doesn't istype each entry.
+		L.update_overlay()
 		L.needs_update = FALSE

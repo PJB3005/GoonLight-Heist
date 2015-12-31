@@ -18,7 +18,6 @@
 #include "helpers\atom.dm"
 #include "helpers\dview.dm"
 #include "helpers\math.dm"
-#include "helpers\turf.dm"
 #include "helpers\type2type.dm"
 #include "Lighting\_lighting_defines.dm"
 #include "Lighting\lighting_area.dm"
@@ -30,6 +29,7 @@
 #include "Lighting\lighting_turf.dm"
 #include "Lighting\~lighting_undefs.dm"
 #include "stubs\garbage.dm"
+#include "stubs\logging.dm"
 #include "stubs\pooling.dm"
 #include "stubs\turf.dm"
 // END_INCLUDE
