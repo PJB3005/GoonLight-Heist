@@ -67,8 +67,34 @@
 	if(top_atom)
 		top_atom.light_sources    -= src
 
+#ifdef LIGHTING_INSTANT_UPDATES
+/datum/light_source/proc/effect_update()
+	. = check()
+	if(destroyed || . || force_update)
+		remove_lum()
+		if(!destroyed)
+			apply_lum()
+
+	else if(vis_update)	// We smartly update only tiles that became (in) visible to use.
+		smart_vis_update()
+
+	vis_update   = FALSE
+	force_update = FALSE
+	needs_update = FALSE
+#else
+
+// Call it dirty, I don't care.
+// This is here so there's no performance loss on non-instant updates from the fact that the engine can also do instant updates.
+#define effect_update()                \
+	if(!needs_update)                  \
+	{                                  \
+		lighting_update_lights += src; \
+		needs_update = 1;              \
+	}
+#endif
+
 // This proc will cause the light source to update the top atom, and add itself to the update queue.
-/datum/light_source/proc/update(atom/new_top_atom)
+/datum/light_source/proc/update(var/atom/new_top_atom)
 	// This top atom is different.
 	if(new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom) // Remove ourselves from the light sources of that top atom.
@@ -82,24 +108,19 @@
 
 			top_atom.light_sources += src // Add ourselves to the light sources of our new top atom.
 
-	if(!needs_update) // Add us to the queue if we aren't updating already.
-		lighting_update_lights += src
-		needs_update = 1
+	effect_update()
 
 // Will force an update without checking if it's actually needed.
 /datum/light_source/proc/force_update()
 	force_update = 1
-	if(!needs_update) // Add us to the queue if we aren't updating already.
-		needs_update = 1
-		lighting_update_lights += src
+
+	effect_update()
 
 // Will cause the light source to recalculate turfs that were removed or added to visibility only.
 /datum/light_source/proc/vis_update()
-	if(!needs_update) // Add us to the queue if we aren't updating already.
-		needs_update = 1
-		lighting_update_lights += src
-
 	vis_update = 1
+
+	effect_update()
 
 // Will check if we actually need to update, and update any variables that may need to be updated.
 /datum/light_source/proc/check()
@@ -180,7 +201,6 @@
 #define LUM_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 + LIGHTING_HEIGHT) / max(1, light_range)))
 
 /datum/light_source/proc/apply_lum()
-	// world << "test"
 	applied = 1
 
 	// Keep track of the last applied lum values so that the lighting can be reversed
@@ -191,7 +211,6 @@
 	FOR_DVIEW(var/turf/T, light_range, source_turf, INVISIBILITY_LIGHTING)
 		for(var/datum/lighting_corner/C in T.get_corners(get_dir(source_turf, T)))
 			if(C in effect_str)
-				// world << "skipping"
 				continue
 
 			APPLY_CORNER(C)
@@ -234,3 +253,8 @@
 	for(var/datum/lighting_corner/C in effect_str - corners) // Old, now gone, corners.
 		REMOVE_CORNER(C)
 		effect_str -= C
+
+#undef effect_update
+#undef LUM_FALLOFF
+#undef REMOVE_CORNER
+#undef APPLY_CORNER

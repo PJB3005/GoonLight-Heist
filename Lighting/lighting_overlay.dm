@@ -55,19 +55,15 @@
 		// Huge switch to determine i based on D.
 		switch(turn(C.masters[T], 180))
 			if(NORTHEAST)
-				// world << "NORTHEAST"
 				i = AR
 
 			if(SOUTHEAST)
-				// world << "SOUTHEAST"
 				i = GR
 
 			if(SOUTHWEST)
-				// world << "SOUTHWEST"
 				i = RR
 
 			if(NORTHWEST)
-				// world << "NORTHWEST"
 				i = BR
 
 		var/mx = max(C.lum_r, C.lum_g, C.lum_b) // Scale it so 1 is the strongest lum, if it is above 1.

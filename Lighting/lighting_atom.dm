@@ -1,7 +1,7 @@
 /atom
 	var/light_power = 1 // Intensity of the light.
 	var/light_range = 0 // Range in tiles of the light.
-	var/light_color	    // Hexadecimal RGB string representing the colour of the light.
+	var/light_color     // Hexadecimal RGB string representing the colour of the light.
 
 	var/tmp/datum/light_source/light // Our light source. Don't fuck with this directly unless you have a good reason!
 	var/tmp/list/light_sources       // Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
@@ -17,8 +17,12 @@
 // Will update the light (duh).
 // Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
 /atom/proc/update_light()
+	set waitfor = FALSE
 	if(deleted())
 		return
+
+	if(!lighting_corners_initialised)
+		sleep(20)
 
 	if(!light_power || !light_range) // We won't emit light anyways, destroy the light source.
 		if(light)
