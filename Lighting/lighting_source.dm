@@ -85,11 +85,12 @@
 
 // Call it dirty, I don't care.
 // This is here so there's no performance loss on non-instant updates from the fact that the engine can also do instant updates.
-#define effect_update()                \
-	if(!needs_update)                  \
-	{                                  \
-		lighting_update_lights += src; \
-		needs_update = 1;              \
+// If you're wondering what's with the "BYOND" argument: BYOND won't let me have a () macro that has no arguments :|.
+#define effect_update(BYOND)            \
+	if(!needs_update)                   \
+	{                                   \
+		lighting_update_lights += src;  \
+		needs_update            = TRUE; \
 	}
 #endif
 
@@ -108,19 +109,19 @@
 
 			top_atom.light_sources += src // Add ourselves to the light sources of our new top atom.
 
-	effect_update()
+	effect_update(null)
 
 // Will force an update without checking if it's actually needed.
 /datum/light_source/proc/force_update()
 	force_update = 1
 
-	effect_update()
+	effect_update(null)
 
 // Will cause the light source to recalculate turfs that were removed or added to visibility only.
 /datum/light_source/proc/vis_update()
 	vis_update = 1
 
-	effect_update()
+	effect_update(null)
 
 // Will check if we actually need to update, and update any variables that may need to be updated.
 /datum/light_source/proc/check()
@@ -210,7 +211,12 @@
 
 	FOR_DVIEW(var/turf/T, light_range, source_turf, INVISIBILITY_LIGHTING)
 		for(var/datum/lighting_corner/C in T.get_corners(get_dir(source_turf, T)))
-			if(C in effect_str)
+			if(effect_str.Find(C))
+				continue
+
+			C.affecting += src
+
+			if(!C.active)
 				continue
 
 			APPLY_CORNER(C)
@@ -232,7 +238,15 @@
 	for(var/datum/lighting_corner/C in effect_str)
 		REMOVE_CORNER(C)
 
+		C.affecting -= src
+
 	effect_str.Cut()
+
+/datum/light_source/proc/recalc_corner(var/datum/lighting_corner/C)
+	if(effect_str.Find(C)) // Already have one.
+		REMOVE_CORNER(C)
+
+	APPLY_CORNER(C)
 
 /datum/light_source/proc/smart_vis_update()
 	var/list/datum/lighting_corner/corners = list()
@@ -248,6 +262,10 @@
 		T.affecting_lights -= src
 
 	for(var/datum/lighting_corner/C in corners - effect_str) // New corners
+		C.affecting += src
+		if(!C.active)
+			continue
+
 		APPLY_CORNER(C)
 
 	for(var/datum/lighting_corner/C in effect_str - corners) // Old, now gone, corners.

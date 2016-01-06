@@ -33,6 +33,8 @@
 
 	T.luminosity = TRUE
 
+	lighting_update_overlays -= src;
+
 	..()
 
 /atom/movable/lighting_overlay/proc/update_overlay()
@@ -49,7 +51,7 @@
 	var/list/L = src.color:Copy() // For some dumb reason BYOND won't allow me to use [] on a colour matrix directly.
 	var/max    = 0
 
-	for(var/datum/lighting_corner/C in T.corners)
+	for(var/datum/lighting_corner/C in T.corners)I
 		var/i = 0
 
 		// Huge switch to determine i based on D.

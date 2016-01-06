@@ -2,7 +2,7 @@
 	var/dynamic_lighting = 1
 	luminosity           = 1
 
-	var/tmp/list/datum/light_source/affecting_lights // List of light sources affecting this turf.
+	var/tmp/list/datum/light_source/affecting_lights       // List of light sources affecting this turf.
 	var/tmp/atom/movable/lighting_overlay/lighting_overlay // Our lighting overlay.
 	var/tmp/list/datum/lighting_corner/corners[4]
 	var/tmp/has_opaque_atom = FALSE // Not to be confused with opacity, this will be TRUE if there's any opaque atom on the tile.
@@ -22,6 +22,9 @@
 	if(lighting_overlay)
 		returnToPool(lighting_overlay)
 
+	for(var/datum/lighting_corner/C in corners)
+		C.update_active()
+
 // Builds a lighting overlay for us, but only if our area is dynamic.
 /turf/proc/lighting_build_overlay()
 	if(lighting_overlay)
@@ -31,6 +34,14 @@
 	if(A.dynamic_lighting)
 		getFromPool(/atom/movable/lighting_overlay, src)
 
+		for(var/datum/lighting_corner/C in corners)
+			if(!C.active) // We would activate the corner, calculate the lighting for it.
+				for(var/L in C.affecting)
+					var/datum/light_source/S = L
+					S.recalc_corner(C)
+
+				C.active = TRUE
+
 // Used to get a scaled lumcount.
 /turf/proc/get_lumcount(var/minlum = 0, var/maxlum = 1)
 	if(!lighting_overlay)
@@ -38,9 +49,7 @@
 
 	var/totallums = 0
 	for(var/datum/lighting_corner/L in corners)
-		totallums += L.lum_r
-		totallums += L.lum_g
-		totallums += L.lum_b
+		totallums += L.lum_r + L.lum_b + L.lum_g
 
 	totallums /= 12 // 4 corners, each with 3 channels, get the average.
 
@@ -80,7 +89,7 @@
 
 /turf/proc/get_corners(var/dir)
 	if(has_opaque_atom)
-		return null
+		return null // Since this proc gets used in a for loop, null won't be looped though.
 
 	return corners
 

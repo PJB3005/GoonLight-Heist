@@ -6,15 +6,16 @@
 /var/list/LIGHTING_CORNER_DIAGONAL = list(NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST)
 
 /datum/lighting_corner
-	var/list/turf/masters = list()
+	var/list/turf/masters                 = list()
+	var/list/datum/light_source/affecting = list() // Light sources affecting us.
+	var/active                            = FALSE  // TRUE if one of our masters has dynamic lighting.
 
-	// Mostly here for simplicity.
-	var/x             = 0
-	var/y             = 0
+	var/x     = 0
+	var/y     = 0
 
-	var/lum_r         = 0
-	var/lum_g         = 0
-	var/lum_b         = 0
+	var/lum_r = 0
+	var/lum_g = 0
+	var/lum_b = 0
 
 /datum/lighting_corner/New(var/turf/new_turf, var/diagonal)
 	. = ..()
@@ -53,6 +54,15 @@
 		masters[T]   = ((T.x > x) ? EAST : WEST) | ((T.y > y) ? NORTH : SOUTH) // Get the dir based on coordinates.
 		i            = LIGHTING_CORNER_DIAGONAL.Find(turn(masters[T], 180))
 		T.corners[i] = src
+
+	spawn() // Lighting overlays get initialized AFTER corners, so this spawn() will make sure the activity (which checks for overlays) is updated after the overlays are generated.
+		update_active()
+
+/datum/lighting_corner/proc/update_active()
+	active = FALSE
+	for(var/turf/T in masters)
+		if(T.lighting_overlay)
+			active = TRUE
 
 // God that was a mess, now to do the rest of the corner code! Hooray!
 /datum/lighting_corner/proc/update_lumcount(var/delta_r, var/delta_g, var/delta_b)

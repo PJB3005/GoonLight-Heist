@@ -29,6 +29,12 @@
 		L.needs_update = FALSE
 
 	for(var/A in lighting_update_overlays)
+		if(!A)
+			continue
+
 		var/atom/movable/lighting_overlay/L = A // Typecasting this later so BYOND doesn't istype each entry.
 		L.update_overlay()
 		L.needs_update = FALSE
+
+	lighting_update_overlays.Cut()
+	lighting_update_lights.Cut()

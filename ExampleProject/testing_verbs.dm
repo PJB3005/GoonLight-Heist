@@ -2,7 +2,7 @@
 	src << "Coordinates: [x], [y]"
 	var/turf/T = get_turf(src)
 	for(var/datum/lighting_corner/L in T.corners)
-		src << "Lighting corner \ref[L]: dir: [dir2text(LIGHTING_CORNER_DIAGONAL[T.corners.Find(L)])], x: [L.x], y: [L.y], lum_r: [L.lum_r], lum_g: [L.lum_g], lum_b: [L.lum_b]"
+		src << "Lighting corner \ref[L]: dir: [dir2text(LIGHTING_CORNER_DIAGONAL[T.corners.Find(L)])], x: [L.x], y: [L.y], lum_r: [L.lum_r], lum_g: [L.lum_g], lum_b: [L.lum_b], [L.active ? "ACTIVE" : "INACTIVE"]"
 
 /mob/verb/spawn_corner()
 	var/turf/T = get_turf(src)
