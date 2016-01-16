@@ -70,6 +70,9 @@
 	lum_g += delta_g
 	lum_b += delta_b
 
+#ifndef LIGHTING_INSTANT_UPDATES
+/datum/lighting_corner/proc/update_overlays()
+#endif
 	for(var/TT in masters)
 		var/turf/T = TT
 		if(T.lighting_overlay)

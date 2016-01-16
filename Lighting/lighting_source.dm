@@ -59,7 +59,7 @@
 
 // Kill ourselves.
 /datum/light_source/proc/destroy()
-	destroyed = 1
+	destroyed = TRUE
 	force_update()
 	if(source_atom)
 		source_atom.light_sources -= src
