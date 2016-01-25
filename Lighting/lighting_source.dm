@@ -69,8 +69,7 @@
 
 #ifdef LIGHTING_INSTANT_UPDATES
 /datum/light_source/proc/effect_update()
-	. = check()
-	if(destroyed || . || force_update)
+	if(check() || destroyed || force_update)
 		remove_lum()
 		if(!destroyed)
 			apply_lum()

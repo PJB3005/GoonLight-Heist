@@ -1,4 +1,5 @@
 /var/list/lighting_update_lights    = list()    // List of lighting sources  queued for update.
+/var/list/lighting_update_corners   = list()    // List of lighting corners  queued for update.
 /var/list/lighting_update_overlays  = list()    // List of lighting overlays queued for update.
 
 /var/lighting_processing            = TRUE
@@ -28,6 +29,11 @@
 		L.needs_update = FALSE
 
 	for(var/A in lighting_update_corners)
+		var/datum/lighting_corner/C = A
+
+		A.update_overlays()
+
+		A.needs_update = FALSE
 
 	for(var/A in lighting_update_overlays)
 		if(!A)
