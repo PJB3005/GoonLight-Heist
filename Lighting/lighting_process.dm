@@ -31,9 +31,9 @@
 	for(var/A in lighting_update_corners)
 		var/datum/lighting_corner/C = A
 
-		A.update_overlays()
+		C.update_overlays()
 
-		A.needs_update = FALSE
+		C.needs_update = FALSE
 
 	for(var/A in lighting_update_overlays)
 		if(!A)
