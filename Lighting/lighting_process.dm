@@ -1,7 +1,8 @@
 /var/list/lighting_update_lights    = list()    // List of lighting sources  queued for update.
+/var/list/lighting_update_corners   = list()    // List of lighting corners  queued for update.
 /var/list/lighting_update_overlays  = list()    // List of lighting overlays queued for update.
 
-/var/lighting_processing            = 1
+/var/lighting_processing            = TRUE
 
 /world/New()
 	. = ..()
@@ -15,8 +16,7 @@
 
 /proc/lighting_process()
 	for(var/datum/light_source/L in lighting_update_lights)
-		. = L.check()
-		if(L.destroyed || . || L.force_update)
+		if(L.check() || L.destroyed || L.force_update)
 			L.remove_lum()
 			if(!L.destroyed)
 				L.apply_lum()
@@ -27,6 +27,13 @@
 		L.vis_update   = FALSE
 		L.force_update = FALSE
 		L.needs_update = FALSE
+
+	for(var/A in lighting_update_corners)
+		var/datum/lighting_corner/C = A
+
+		C.update_overlays()
+
+		C.needs_update = FALSE
 
 	for(var/A in lighting_update_overlays)
 		if(!A)

@@ -59,7 +59,7 @@
 
 // Kill ourselves.
 /datum/light_source/proc/destroy()
-	destroyed = 1
+	destroyed = TRUE
 	force_update()
 	if(source_atom)
 		source_atom.light_sources -= src
@@ -69,8 +69,7 @@
 
 #ifdef LIGHTING_INSTANT_UPDATES
 /datum/light_source/proc/effect_update()
-	. = check()
-	if(destroyed || . || force_update)
+	if(check() || destroyed || force_update)
 		remove_lum()
 		if(!destroyed)
 			apply_lum()

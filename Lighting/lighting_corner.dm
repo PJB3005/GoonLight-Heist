@@ -17,6 +17,8 @@
 	var/lum_g = 0
 	var/lum_b = 0
 
+	var/needs_update = FALSE
+
 /datum/lighting_corner/New(var/turf/new_turf, var/diagonal)
 	. = ..()
 
@@ -69,6 +71,14 @@
 	lum_r += delta_r
 	lum_g += delta_g
 	lum_b += delta_b
+
+#ifndef LIGHTING_INSTANT_UPDATES
+	if(!needs_update)
+		needs_update = TRUE
+		lighting_update_corners += src
+
+/datum/lighting_corner/proc/update_overlays()
+#endif
 
 	for(var/TT in masters)
 		var/turf/T = TT
