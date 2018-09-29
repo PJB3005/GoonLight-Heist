@@ -1,10 +1,12 @@
 /turf
-	var/dynamic_lighting = 1
+	var/dynamic_lighting = TRUE
 	luminosity           = 1
+
+	var/tmp/lighting_corners_initialised = FALSE
 
 	var/tmp/list/datum/light_source/affecting_lights       // List of light sources affecting this turf.
 	var/tmp/atom/movable/lighting_overlay/lighting_overlay // Our lighting overlay.
-	var/tmp/list/datum/lighting_corner/corners[4]
+	var/tmp/list/datum/lighting_corner/corners
 	var/tmp/has_opaque_atom = FALSE // Not to be confused with opacity, this will be TRUE if there's any opaque atom on the tile.
 
 /turf/New()
@@ -32,6 +34,8 @@
 
 	var/area/A = loc
 	if(A.dynamic_lighting)
+		if (!lighting_corners_initialised)
+			generate_missing_corners()
 		getFromPool(/atom/movable/lighting_overlay, src)
 
 		for(var/datum/lighting_corner/C in corners)
@@ -87,7 +91,16 @@
 		else
 			lighting_clear_overlay()
 
-/turf/proc/get_corners(var/dir)
+/turf/proc/generate_missing_corners()
+	lighting_corners_initialised = TRUE
+	if (!corners)
+		corners = list(null, null, null, null)
+	for (var/i = 1 to 4)
+		if (corners[i]) // Already have a corner on this direction.
+			continue
+		corners[i] = new/datum/lighting_corner(src, LIGHTING_CORNER_DIAGONAL[i])
+
+/turf/proc/get_corners()
 	if(has_opaque_atom)
 		return null // Since this proc gets used in a for loop, null won't be looped though.
 
@@ -101,6 +114,7 @@
 	// If you're wondering how this proc'll keep running since the turf should be "deleted":
 	// BYOND never deletes turfs, when you "delete" a turf, it actually morphs the turf into a new one.
 	// Running procs do NOT get stopped due to this.
+
 	var/l_overlay     = lighting_overlay // Not even a need to cast this, honestly.
 	var/affect_lights = affecting_lights
 	var/l_corners     = corners
@@ -109,9 +123,15 @@
 	// Create the new turf, replacing us.
 	new new_type(src)
 
+	lighting_corners_initialised = TRUE
+	recalc_atom_opacity()
+
 	lighting_overlay  = l_overlay
 	affecting_lights  = affect_lights
 	corners           = l_corners
+
+	if((old_opacity != opacity) || (dynamic_lighting != old_dynamic_lighting) || force_lighting_update)
+		reconsider_lights()
 
 	if(old_dynamic != dynamic_lighting)
 		if(dynamic_lighting)
