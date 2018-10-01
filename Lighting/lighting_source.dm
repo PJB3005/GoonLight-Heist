@@ -269,6 +269,8 @@
 	var/list/L = turfs - affecting_turfs // New turfs, add us to the affecting lights of them.
 	affecting_turfs += L
 	for(var/turf/T in L)
+		if(!T.affecting_lights)
+			T.affecting_lights = list()
 		T.affecting_lights += src
 
 	L = affecting_turfs - turfs // Now-gone turfs, remove us from the affecting lights.
