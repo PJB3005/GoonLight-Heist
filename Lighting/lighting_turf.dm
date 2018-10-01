@@ -119,6 +119,7 @@
 	var/affect_lights = affecting_lights
 	var/l_corners     = corners
 	var/old_dynamic   = dynamic_lighting
+	var/old_opacity   = opacity
 
 	// Create the new turf, replacing us.
 	new new_type(src)
@@ -130,7 +131,7 @@
 	affecting_lights  = affect_lights
 	corners           = l_corners
 
-	if((old_opacity != opacity) || (dynamic_lighting != old_dynamic_lighting) || force_lighting_update)
+	if((old_opacity != opacity) || (dynamic_lighting != old_dynamic))
 		reconsider_lights()
 
 	if(old_dynamic != dynamic_lighting)
